@@ -1,5 +1,8 @@
 # ETL Workshop Project – Candidate Selection
 
+![Python](https://img.shields.io/badge/python-3.10+-blue.svg)
+![MySQL](https://img.shields.io/badge/MySQL-8.0-orange.svg)
+
 ## 📌 Description
 This project implements an **end-to-end ETL pipeline** for a dataset of job candidates in the tech industry.  
 The goal was to design a **Data Warehouse in MySQL** using a **star schema dimensional model**, and from it compute key **recruitment KPIs** and create **visualizations in Python (Matplotlib)**.
@@ -78,13 +81,28 @@ Examples:
 - Horizontal bar chart → hires by technology.  
 - Vertical bar chart → hires by year.  
 - Line chart → hires by country over time.  
+- Bar chart → hires by experience and seniority.  
 - Single bar chart → global hire rate.  
 
 All generated figures are stored in the `/figs` folder and can be included in reports or presentations.  
 
-Example:
-
+### Hires by Technology
 ![Hires by Technology](figs/hires_por_tecnologia.png)
+
+### Hires by Year
+![Hires by Year](figs/hires_por_anio.png)
+
+### Hires by Seniority
+![Hires by Seniority](figs/hires_por_seniority.png)
+
+### Hires by Country
+![Hires by Country](figs/hires_por_pais_tiempo.png)
+
+### Hires by Experience Range
+![Hires by Experience Range](figs/hires_por_experiencia.png)
+
+### Hire Rate
+![Hire Rate](figs/hire_rate_global.png)
 
 ---
 
@@ -95,4 +113,4 @@ Example:
 
 Install dependencies with:
 ```bash
-pip install pandas sqlalchemy pymysql matplotlib
+pip install -r requirements.txt
