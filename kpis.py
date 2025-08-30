@@ -1,14 +1,7 @@
 import pandas as pd
 from sqlalchemy import create_engine
 import matplotlib.pyplot as plt
-
-# Conexión a MySQL
-user = 'root'
-password = 'root'
-host = 'localhost'
-port = 3306
-database = 'selection_dw'
-engine = create_engine(f'mysql+pymysql://{user}:{password}@{host}:{port}/{database}')
+from db_conn import engine
 
 # Contrataciones por tecnología
 query_tech = """
@@ -22,14 +15,14 @@ ORDER BY total_hired DESC;
 df_tech = pd.read_sql(query_tech, engine)
 
 # Mostrar el DataFrame
-print("\n>>> Hires por tecnología")
+print("\n>>> Hires by technology")
 print(df_tech)
 
 plt.figure(figsize=(9, 7))
 plt.barh(df_tech["technology"], df_tech["total_hired"])
-plt.gca().invert_yaxis()  # la mayor arriba
-plt.xlabel("Contrataciones")
-plt.title("Contrataciones por Tecnología (Hires)")
+plt.gca().invert_yaxis()  
+plt.xlabel("Hires")
+plt.title("Hires by technology")
 plt.tight_layout()
 plt.show()
 
@@ -45,14 +38,14 @@ ORDER BY d.year;
 df_year = pd.read_sql(query_year, engine)
 
 # Mostrar el DataFrame
-print("\n>>> Hires por año")
+print("\n>>> Hires by year")
 print(df_year)
 
 plt.figure(figsize=(6,4))
 plt.bar(df_year['year'], df_year['total_hired'], color='orange')
-plt.xlabel('Año')
-plt.ylabel('Contrataciones')
-plt.title('Contrataciones por Año')
+plt.xlabel('Year')
+plt.ylabel('Hires')
+plt.title('Hires by Year')
 plt.tight_layout()
 plt.show()
 
@@ -68,14 +61,14 @@ ORDER BY total_hired DESC;
 df_seniority = pd.read_sql(query_seniority, engine)
 
 # Mostrar el DataFrame
-print("\n>>> Hires por seniority")
+print("\n>>> Hires by seniority")
 print(df_seniority)
 
 plt.figure(figsize=(8,5))
 plt.barh(df_seniority["seniority"], df_seniority["total_hired"])
 plt.gca().invert_yaxis()
-plt.xlabel("Contrataciones")
-plt.title("Contrataciones por Seniority (Hires)")
+plt.xlabel("Hires")
+plt.title("Hires by Seniority")
 plt.tight_layout()
 plt.show()
 
@@ -93,15 +86,15 @@ ORDER BY c.country, d.year;
 df_country = pd.read_sql(query_country, engine)
 
 # Mostrar el DataFrame
-print("\n>>> Hires por país en el tiempo")
+print("\n>>> Hires by country over years (focus on USA, Brazil, Colombia, Ecuador)")
 print(df_country)
 
 for country in df_country['country'].unique():
     data = df_country[df_country['country'] == country]
     plt.plot(data['year'], data['total_hired'], marker='o', label=country)
-plt.xlabel('Año')
-plt.ylabel('Contrataciones')
-plt.title('Contrataciones por País')
+plt.xlabel('Year')
+plt.ylabel('Hires')
+plt.title('Hires by Country Over Years')
 plt.legend()
 plt.tight_layout()
 plt.show()
@@ -131,7 +124,7 @@ ORDER BY
   END;
 """
 df_exp = pd.read_sql(query_exp, engine)
-print("\n>>> Contrataciones por rango de experiencia (YOE)")
+print("\n>>> Hires by experience range (YOE)")
 print(df_exp)
 
 # Gráfico
@@ -141,8 +134,8 @@ df_exp = df_exp.sort_values('experiencia_rango')
 
 plt.figure(figsize=(7,4))
 plt.barh(df_exp['experiencia_rango'], df_exp['total_hired'], color="teal")
-plt.xlabel('Contrataciones')
-plt.title('Contrataciones por Rango de Experiencia (YOE)')
+plt.xlabel('Hires')
+plt.title('Hires by Experience Range (YOE)')
 plt.tight_layout()
 plt.show()
 
@@ -156,16 +149,16 @@ FROM fact_selection;
 """
 df_hire_rate = pd.read_sql(query_hire_rate, engine)
 
-print("\n>>> Tasa de contratación (Hire Rate):")
+print("\n>>> Hire Rate")
 print(df_hire_rate)
 
-# Visualización simple del porcentaje de contratados (barra única)
+# Simple visualization of the hire rate (single bar)
 plt.figure(figsize=(4, 5))
 plt.bar(['Hire Rate'], df_hire_rate['hire_rate_percent'], color='#4CAF50')
-plt.ylabel('% de Contratados')
+plt.ylabel('% Hired')
 plt.title(
-    f"Tasa de contratación: {df_hire_rate['hire_rate_percent'].iloc[0]}%\n"
-    f"(Contratados={df_hire_rate['total_hires'].iloc[0]}, Total={df_hire_rate['total_applications'].iloc[0]})"
+    f"Hire Rate: {df_hire_rate['hire_rate_percent'].iloc[0]}%\n"
+    f"(Hired={df_hire_rate['total_hires'].iloc[0]}, Total={df_hire_rate['total_applications'].iloc[0]})"
 )
 plt.ylim(0, 100)
 plt.tight_layout()

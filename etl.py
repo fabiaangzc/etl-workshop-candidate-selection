@@ -1,6 +1,7 @@
 import pandas as pd
 from sqlalchemy import create_engine
 from sqlalchemy import text
+from db_conn import engine
 
 # 1. Cargar el CSV
 df = pd.read_csv('data/candidates.csv', sep=';')
@@ -82,15 +83,6 @@ fact_selection = df_fact[[
     'Technical Interview Score': 'interview_score'
 })
 
-# Ahora tienes tus DataFrames: dim_date, dim_country, dim_technology, dim_seniority, dim_candidate, fact_selection
-
-# Opcional: guardar a CSV para revisión
-# dim_date.to_csv('dim_date.csv', index=False)
-# dim_country.to_csv('dim_country.csv', index=False)
-# dim_technology.to_csv('dim_technology.csv', index=False)
-# dim_seniority.to_csv('dim_seniority.csv', index=False)
-# dim_candidate.to_csv('dim_candidate.csv', index=False)
-# fact_selection.to_csv('fact_selection.csv', index
 
 print(dim_date.head())
 print(dim_country.head())
@@ -99,15 +91,6 @@ print(dim_seniority.head())
 print(dim_candidate.head())
 print(fact_selection.head())
 
-#Se crea la conexión a la base de datos MySQL y se cargan los datos
-user = 'root'
-password = 'root'
-host = 'localhost'
-port = 3306
-database = 'selection_dw'
-
-# Crea el engine de conexión
-engine = create_engine(f'mysql+pymysql://{user}:{password}@{host}:{port}/{database}')
 
 # Vacía las tablas antes de cargar los datos
 with engine.connect() as conn:
